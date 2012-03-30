@@ -1,0 +1,15 @@
+<div class="well" style="padding: 8px 0;">
+    <ul class="nav nav-list">
+        <li class="nav-header"><a href="{% url pl-gallery-list page=1 %}">Галереи</a></li>
+        {% for gallery in galls %}
+            {% if gallery.photo_count %}
+                {% ifchanged gallery.date_added|date:'Y' %}
+                    <li class="nav-header">{{ gallery.date_added|date:'Y' }}</li>
+                {% endifchanged %}
+                <li class="{% if current.pk == gallery.pk  %}active{% endif %}">
+                    <a href="{{ gallery.get_absolute_url }}">{{ gallery.title }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

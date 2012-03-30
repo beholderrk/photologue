@@ -1,0 +1,44 @@
+{% extends "photologue/root.html" %}
+{% load pytils_numeral %}
+
+{% block rightCol %}
+
+<h1>Все галереи</h1>
+<hr>
+{% if object_list %}
+    {% for gallery in object_list %}
+{#        {% if gallery.photo_count %}#}
+            {% ifchanged gallery.date_added|date:'Y' %}
+            <h6>{{ gallery.date_added|date:'Y' }}</h6>
+            {% endifchanged %}
+            <h2><a href="{{ gallery.get_absolute_url }}">{{ gallery.title }}</a></h2>
+            <ul class="thumbnails">
+                {% for photo in gallery.sample|slice:':4' %}
+                    {% include "photologue/includes/one_photo_thumbnail.html" %}
+                {% empty %}
+                    <li>в галерее ещё нет фотографий</li>
+                {% endfor %}
+                {% if gallery.photo_count > 4 %}
+                    <li><a href="{{ gallery.get_absolute_url }}">... еще</a></li>
+                {% endif %}
+            </ul>
+{#        {% endif %}#}
+    {% endfor %}
+{% else %}
+    <p>пока что тут пусто.</p>
+{% endif %}
+
+{% if is_paginated %}
+<p>Всего {{ hits }} {{ hits|choose_plural:"галерея, галереи, галерей" }}</p>
+<ul class="pagernp">
+    <li class="previous">
+        <a {% if has_previous %}href="{% url pl-gallery-list previous %}"{% else %}class="disabled"{% endif %}>&larr; назад</a>
+    </li>
+    <li>страница {{ page }} из {{ pages }}</li>
+    <li class="next">
+        <a {% if has_next %}href="{% url pl-gallery-list next %}"{% else %}class="disabled"{% endif %}>вперед &rarr;</a>
+    </li>
+</ul>
+{% endif %}
+
+{% endblock %}
