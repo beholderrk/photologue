@@ -30,6 +30,8 @@ except ImportError:
         from PIL import ImageFile
         from PIL import ImageFilter
         from PIL import ImageEnhance
+
+        ImageFile.MAXBLOCK = 2**20
     except ImportError:
         raise ImportError('Photologue was unable to import the Python Imaging Library. Please confirm it`s installed and available on your current Python path.')
 
