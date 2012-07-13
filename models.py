@@ -30,8 +30,6 @@ except ImportError:
         from PIL import ImageFile
         from PIL import ImageFilter
         from PIL import ImageEnhance
-
-        ImageFile.MAXBLOCK = 2**22
     except ImportError:
         raise ImportError('Photologue was unable to import the Python Imaging Library. Please confirm it`s installed and available on your current Python path.')
 
@@ -425,6 +423,7 @@ class ImageModel(models.Model):
                     return
                 except KeyError:
                     pass
+            ImageFile.MAXBLOCK = 2**22
             im.save(im_filename, 'JPEG', quality=int(photosize.quality), optimize=True)
         except IOError, e:
             if os.path.isfile(im_filename):
